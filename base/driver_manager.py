@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-class DriverManager:
+class ChromeDriver:
     def __init__(self, base_url):
         self.options = webdriver.ChromeOptions()
         self.options.add_experimental_option("detach", True)
