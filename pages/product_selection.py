@@ -1,6 +1,7 @@
 import time
 
 from selenium import webdriver
+from selenium.common import NoSuchElementException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -8,38 +9,53 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from base.driver_manager import ChromeDriver
 
+
 class Filters:
-    PRICE = 'PR'
     RATING = 'RT'
 
 
 class ProductSelection(ChromeDriver):
-    def apply_filter(self, filters):
+    def apply_filters(self, filters):
         for filter in filters:
             if filter == Filters.RATING:
-                self.driver.find_element(By.XPATH, f'//span[contains(text(), "{filters[filter]}")]').click()
-            if filter == Filters.PRICE:
-                min_price, max_price = filters[filter]
-                max_price_input = self.driver.find_element(By.CSS_SELECTOR, 'input[data-meta-name="FilterPriceGroup__input-max"]')
-                #min_price_input = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[data-meta-name="FilterPriceGroup__input-min"]')))
+                try:
 
-                max_price_input.send_keys(max_price)
+                    rating = self.driver.find_element(By.XPATH, f'//input[contains(@name, "rating.{filters[filter]}")]')
+                    action = ActionChains(self.driver)
+                    action.move_to_element(rating).perform()
+                    rating.click()
+                    print(f"{filters[filter]} RATING APPLIED")
+                except:
+                    print('NO PRODUCTS WITH SELECTED RATING')
 
-                #min_price_input.send_keys(min_price)
 
-    def search_product(self, title):
-        search_bar = WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((
-            By.CSS_SELECTOR, '#__next > div > div.css-1pcsihw.e1s351fz0 > div > div.css-1l8w4nq.es4sr930 > div > div > div.e1r0p2ss0.css-cvzj2n.e1loosed0 > div.css-i9gxme.e1qv3bih0 > form > div > div > label > input'
+
+    def search_product(self, title, filters):
+        search_bar = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((
+            By.CSS_SELECTOR, "input[type='search']"
         )))
         time.sleep(1)
         search_bar.click()
         time.sleep(1)
-        search_bar.send_keys(title + Keys.RETURN)
+        search_bar.send_keys(title)
+        search_bar.send_keys(Keys.ENTER)
         time.sleep(2)
+        self.apply_filters(filters)
+        time.sleep(5)
+        try:
+            first_match = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
+                (By.CSS_SELECTOR, 'div[data-meta-name="SnippetProductVerticalLayout"] > a'))
+            )
+            action = ActionChains(self.driver)
+            action.move_to_element(first_match).perform()
+            first_match.click()
+            print("ITEM FOUND")
+        except NoSuchElementException:
+            print("NO ITEM FOUND")
 
 
 
-p = ProductSelection('https://www.citilink.ru/')
-p.search_product('айфон 11')
-p.apply_filter({Filters.PRICE : ('10000', '20000')})
+p = ProductSelection('https://www.citilink.ru')
+p.search_product('айфон 11', {Filters.RATING : ('3.5')})
+
 
