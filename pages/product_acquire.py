@@ -11,7 +11,6 @@ from base.driver_manager import ChromeDriver
 from base.functions import find_and_click_element
 
 
-
 class ProductAcquire:
     def __init__(self, driver):
         self.driver = driver

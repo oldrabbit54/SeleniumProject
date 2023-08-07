@@ -10,7 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from base.driver_manager import ChromeDriver
 from pages.product_acquire import ProductAcquire
 from base.functions import find_and_click_element, go_to_main_page
-
+from pages.authorization_manager import AuthorizationManager
 class Filters:
     RATING = 'RT'
 
@@ -47,9 +47,12 @@ class ProductSelection(ChromeDriver):
 
 base_url = 'https://www.citilink.ru'
 p = ProductSelection('https://www.citilink.ru')
-p.search_product('айфон 11', {Filters.RATING : ('3.5')})
-p = ProductAcquire(p.driver)
-p.add_to_cart()
-p.buy()
-go_to_main_page(p.driver, base_url)
+p = AuthorizationManager(p.driver)
+p.login('qwerty@mail.ru', '1234567')
+# p.search_product('айфон 11', {Filters.RATING : ('3.5')})
+# p = ProductAcquire(p.driver)
+# p.add_to_cart()
+# p.buy()
+# go_to_main_page(p.driver, base_url)
+
 
