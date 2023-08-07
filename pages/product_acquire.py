@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from base.driver_manager import ChromeDriver
-
+from base.functions import find_and_click_element
 
 
 
@@ -17,26 +17,18 @@ class ProductAcquire:
         self.driver = driver
 
     def add_to_cart(self):
-        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
-            (By.XPATH, '//*[contains(text(), "В корзину")]')
-        )).click()
+
+        find_and_click_element(By.XPATH, '//*[contains(text(), "В корзину")]', self.driver)
         time.sleep(2)
         try:
-            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(
-                (By.XPATH, '//*[contains(text(), "Перейти в корзину")]')
-            )).click()
-        except:
-            WebDriverWait(self.driver, 5).until(EC.presence_of_element_located(
-                (By.XPATH, '//*[contains(text(), "Оформить заказ")]')
-            )).click()
-
+            find_and_click_element(By.XPATH, '//*[contains(text(), "Перейти в корзину")]', self.driver)
+        except NoSuchElementException:
+            find_and_click_element(By.XPATH, '//*[contains(text(), "Оформить заказ")]', self.driver)
 
         print("ADDED TO CART")
         time.sleep(2)
 
     def buy(self):
-        WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(
-            (By.XPATH, '//button[@title="Перейти к оформлению"]')
-        )).click()
+        find_and_click_element(By.XPATH, '//button[@title="Перейти к оформлению"]', self.driver)
         print("CREDENTIALS LEFT")
 
