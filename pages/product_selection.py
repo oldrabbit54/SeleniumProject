@@ -28,16 +28,16 @@ class ProductSelection(ChromeDriver):
 
 
 
-    def search_product(self, title, filters):
+    def search_product(self, title, filters = None):
         search_bar = find_and_click_element(By.CSS_SELECTOR, "input[type='search']", self.driver)
         time.sleep(1)
         search_bar.send_keys(title)
         search_bar.send_keys(Keys.ENTER)
         time.sleep(2)
-        self.apply_filters(filters)
+        #self.apply_filters(filters)
         time.sleep(5)
         try:
-            find_and_click_element(By.CSS_SELECTOR, 'div[data-meta-name="SnippetProductVerticalLayout"] > a', self.driver)
+            find_and_click_element(By.CSS_SELECTOR, 'div[data-meta-name="ProductVerticalSnippet"]:first-child', self.driver)
             print("ITEM FOUND")
         except NoSuchElementException:
             print("NO ITEM FOUND")
@@ -47,12 +47,13 @@ class ProductSelection(ChromeDriver):
 
 base_url = 'https://www.citilink.ru'
 p = ProductSelection('https://www.citilink.ru')
-p = AuthorizationManager(p.driver)
-p.login('qwerty@mail.ru', '1234567')
-# p.search_product('айфон 11', {Filters.RATING : ('3.5')})
-# p = ProductAcquire(p.driver)
-# p.add_to_cart()
-# p.buy()
-# go_to_main_page(p.driver, base_url)
+# p = AuthorizationManager(p.driver)
+# p.login('qwerty@mail.ru', '1234567')
+p.search_product('ear pods')
+p = ProductAcquire(p.driver)
+p.add_to_cart()
+p.buy()
+p.assert_order()
+
 
 
