@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from base.driver_manager import ChromeDriver
+from pages.product_acquire import ProductAcquire
 
 
 class Filters:
@@ -25,7 +26,7 @@ class ProductSelection(ChromeDriver):
                     action.move_to_element(rating).perform()
                     rating.click()
                     print(f"{filters[filter]} RATING APPLIED")
-                except:
+                except NoSuchElementException:
                     print('NO PRODUCTS WITH SELECTED RATING')
 
 
@@ -57,5 +58,7 @@ class ProductSelection(ChromeDriver):
 
 p = ProductSelection('https://www.citilink.ru')
 p.search_product('айфон 11', {Filters.RATING : ('3.5')})
-
+p = ProductAcquire(p.driver)
+p.add_to_cart()
+p.buy()
 
