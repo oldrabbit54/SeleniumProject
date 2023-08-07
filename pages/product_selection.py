@@ -13,6 +13,7 @@ from base.functions import find_and_click_element, go_to_main_page
 from pages.authorization_manager import AuthorizationManager
 class Filters:
     RATING = 'RT'
+    AVAILABILITY = 'AVLB'
 
 
 class ProductSelection(ChromeDriver):
@@ -20,11 +21,20 @@ class ProductSelection(ChromeDriver):
         for fltr in filters:
             if fltr == Filters.RATING:
                 try:
-                    rating = find_and_click_element(By.XPATH,
-                                f'//input[contains(@name, "rating.{filters[fltr]}")]', self.driver)
+                    find_and_click_element(By.XPATH,
+                                f'//input[contains(@name, "rating.{filters[fltr]}")]', self.driver
+                                                    )
                     print(f"{filters[fltr]} RATING APPLIED")
                 except NoSuchElementException:
                     print('NO PRODUCTS WITH SELECTED RATING')
+            if fltr == Filters.AVAILABILITY:
+                for available_status in filters[fltr]:
+                    try:
+                        print(available_status)
+                        find_and_click_element(By.CSS_SELECTOR, available_status, self.driver)
+                        print("AVAILABILITY OPTION CHOSEN")
+                    except:
+                        print("CANNOT CHOOSE AVAILABILITY OPTION")
 
 
 
@@ -34,7 +44,7 @@ class ProductSelection(ChromeDriver):
         search_bar.send_keys(title)
         search_bar.send_keys(Keys.ENTER)
         time.sleep(2)
-        #self.apply_filters(filters)
+        self.apply_filters(filters)
         time.sleep(5)
         try:
             find_and_click_element(By.CSS_SELECTOR, 'div[data-meta-name="ProductVerticalSnippet"]:first-child', self.driver)
@@ -49,7 +59,7 @@ base_url = 'https://www.citilink.ru'
 p = ProductSelection('https://www.citilink.ru')
 # p = AuthorizationManager(p.driver)
 # p.login('qwerty@mail.ru', '1234567')
-p.search_product('ear pods')
+p.search_product('ear pods', {Filters.RATING : '4.5', Filters.AVAILABILITY : [r'#available\.all', r'#available\.instore']})
 p = ProductAcquire(p.driver)
 p.add_to_cart()
 p.buy()
