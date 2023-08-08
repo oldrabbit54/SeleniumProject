@@ -43,6 +43,8 @@ class ProductSelection(ChromeDriver):
         time.sleep(1)
         search_bar.send_keys(title)
         search_bar.send_keys(Keys.ENTER)
+        print("SEARCHING PRODUCT")
+
         time.sleep(2)
         self.apply_filters(filters)
         time.sleep(5)
@@ -59,11 +61,15 @@ base_url = 'https://www.citilink.ru'
 p = ProductSelection('https://www.citilink.ru')
 # p = AuthorizationManager(p.driver)
 # p.login('qwerty@mail.ru', '1234567')
-p.search_product('ear pods', {Filters.RATING : '4.5', Filters.AVAILABILITY : [r'#available\.all', r'#available\.instore']})
+p.search_product('айфон 11', {Filters.RATING : '4.5', Filters.AVAILABILITY : [r'#available\.all', r'#available\.instore']})
 p = ProductAcquire(p.driver)
 p.add_to_cart()
 p.buy()
 p.assert_order()
+p.finish_order('AAAAAA', 'AAAAA', '+79124567788', 'Тюмень', 'Кулибина',
+               '1', '1', 'ЮMoney')
+p.assert_order()
+p.assert_success_order()
 
 
 
