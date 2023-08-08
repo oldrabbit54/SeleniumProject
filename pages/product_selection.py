@@ -16,7 +16,9 @@ class Filters:
     AVAILABILITY = 'AVLB'
 
 
-class ProductSelection(ChromeDriver):
+class ProductSelection:
+    def __init__(self, driver):
+        self.driver = driver
     def apply_filters(self, filters):
         for fltr in filters:
             if fltr == Filters.RATING:
@@ -56,20 +58,6 @@ class ProductSelection(ChromeDriver):
 
 
 
-
-base_url = 'https://www.citilink.ru'
-p = ProductSelection('https://www.citilink.ru')
-# p = AuthorizationManager(p.driver)
-# p.login('qwerty@mail.ru', '1234567')
-p.search_product('айфон 11', {Filters.RATING : '4.5', Filters.AVAILABILITY : [r'#available\.all', r'#available\.instore']})
-p = ProductAcquire(p.driver)
-p.add_to_cart()
-p.buy()
-p.assert_order()
-p.finish_order('AAAAAA', 'AAAAA', '+79124567788', 'Тюмень', 'Кулибина',
-               '1', '1', 'ЮMoney')
-p.assert_order()
-p.assert_success_order()
 
 
 

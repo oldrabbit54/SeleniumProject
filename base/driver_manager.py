@@ -5,8 +5,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class ChromeDriver:
-    def __init__(self, base_url):
-
+    def __init__(self):
+        base_url = 'https://www.citilink.ru'
         self.options = webdriver.ChromeOptions()
         self.options.add_experimental_option("detach", True)
         self.service = Service()

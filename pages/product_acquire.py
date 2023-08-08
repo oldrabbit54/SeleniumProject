@@ -70,6 +70,8 @@ class ProductAcquire:
 
         find_and_click_element(By.CSS_SELECTOR, 'input[name="city"]', self.driver).send_keys(city)
         find_and_click_element(By.CSS_SELECTOR, 'input[name="street"]', self.driver).send_keys(street)
+        find_and_click_element(By.XPATH, '//*[contains(text(), "Добавить:")]', self.driver)
+
         find_and_click_element(By.CSS_SELECTOR, 'input[name="courier-delivery-new-address-form_house"]',
                                self.driver).send_keys(building)
         find_and_click_element(By.CSS_SELECTOR, 'input[name = "courier-delivery-new-address-form_flat"]',
@@ -80,7 +82,12 @@ class ProductAcquire:
         find_and_click_element(By.XPATH, f'//span[contains(text(), "{payment_method}")]', self.driver)
 
         print("PAYMENT METHOD CHOSEN")
-
+        time.sleep(3)
+        try:
+            self.driver.find_element(By.XPATH, '//span[contains(text(), "Вход")]')
+            find_and_click_element(By.CSS_SELECTOR, 'div[data-meta-name="Popup"] button svg', self.driver)
+        except:
+            pass
         if promocode:
             find_and_click_element(By.CSS_SELECTOR, 'input[name="promoCode"]',
                                    self.driver).send_keys(promocode)
