@@ -48,7 +48,8 @@ class ProductSelection:
         print("SEARCHING PRODUCT")
 
         time.sleep(2)
-        self.apply_filters(filters)
+        if filters:
+            self.apply_filters(filters)
         time.sleep(5)
         try:
             find_and_click_element(By.CSS_SELECTOR, 'div[data-meta-name="ProductVerticalSnippet"]:first-child', self.driver)
