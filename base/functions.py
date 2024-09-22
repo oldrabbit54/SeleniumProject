@@ -16,6 +16,15 @@ def find_and_click_element(by: str, locator: str, driver):
     time.sleep(1)
     return element
 
+def find_element(by: str, locator: str, driver):
+    element = WebDriverWait(driver, 30).until(EC.presence_of_element_located(
+                (by, locator))
+            )
+    action = ActionChains(driver)
+    action.move_to_element(element).perform()
+    time.sleep(1)
+    return element
+
 
 def go_to_main_page(driver, base_url):
     driver.get(base_url)

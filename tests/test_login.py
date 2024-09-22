@@ -1,5 +1,9 @@
-import pytest
+from re import search
 
+import pytest
+from selenium.common import NoSuchElementException
+
+from base.functions import find_and_click_element, find_element
 from pages.authorization_manager import AuthorizationManager
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -8,20 +12,30 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-@pytest.mark.run(order=2)
 def test_login(test_runner):
-    base_url = 'https://www.citilink.ru'
+    base_url = 'https://orioks.miet.ru'
     options = webdriver.ChromeOptions()
+    options.add_argument("--start-fullscreen")
     options.add_experimental_option("detach", True)
     service = Service()
     driver = webdriver.Chrome(options=options, service=service)
-    driver.maximize_window()
     driver.get(base_url)
-    try:
-        WebDriverWait(driver, 10).until(EC.element_to_be_clickable(
-            (By.XPATH, '//*[contains(text(), "Я согласен")]'))
-        ).click()
-    except:
-        pass
-    p = AuthorizationManager(driver)
-    p.login('qwerty@mail.ru', '1234567')
+
+    find_and_click_element(By.CSS_SELECTOR, "#loginform-login",
+                           driver).send_keys("")
+
+    find_and_click_element(By.CSS_SELECTOR, "#loginform-password",
+                           driver).send_keys("")
+
+
+    find_and_click_element(By.CSS_SELECTOR, "#loginbut",
+                           driver)
+
+
+
+
+
+    my_name = find_element(By.CSS_SELECTOR, "#w4 > li:nth-child(3) > a",
+                                     driver).text
+
+    assert "военушкин" in my_name.lower()
