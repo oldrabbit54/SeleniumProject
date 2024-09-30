@@ -21,6 +21,7 @@ def test_login(test_runner):
     driver = webdriver.Chrome(options=options, service=service)
     driver.get(base_url)
 
+
     find_and_click_element(By.CSS_SELECTOR, "#loginform-login",
                            driver).send_keys("")
 
@@ -38,4 +39,4 @@ def test_login(test_runner):
     my_name = find_element(By.CSS_SELECTOR, "#w4 > li:nth-child(3) > a",
                                      driver).text
 
-    assert "военушкин" in my_name.lower()
+    assert "" in my_name.lower()

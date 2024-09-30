@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def test_buy_product(test_runner):
-    base_url = 'https://www.citilink.ru'
+    base_url = ''
     options = webdriver.ChromeOptions()
     options.add_argument("--start-fullscreen")
     options.add_experimental_option("detach", True)
@@ -30,11 +30,11 @@ def test_buy_product(test_runner):
         pass
 
     p = ProductSelection(driver)
-    p.search_product('айфон 13',
+    p.search_product('айфон 12',
                      {Filters.RATING: '4.5', Filters.AVAILABILITY: [r'#available\.all', r'#available\.instore']})
     pa = ProductAcquire(driver)
     pa.add_to_cart()
     pa.buy()
     pa.assert_order()
-    pa.finish_order('AAAAAA', 'AAAAA', '+79124567788', 'Тюмень', 'Ленина',
+    pa.finish_order('AAAAAA', 'AAAAA', '+79109009999', 'Тюмень', 'Ленина',
                    '1', '1', 'ЮMoney', "lol@lol.com")

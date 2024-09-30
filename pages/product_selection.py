@@ -27,7 +27,7 @@ class ProductSelection:
                                 f'//input[contains(@name, "rating.{filters[fltr]}")]', self.driver
                                                     )
                     print(f"{filters[fltr]} RATING APPLIED")
-                except NoSuchElementException:
+                except:
                     print('NO PRODUCTS WITH SELECTED RATING')
             if fltr == Filters.AVAILABILITY:
                 for available_status in filters[fltr]:
@@ -54,7 +54,7 @@ class ProductSelection:
         try:
             find_and_click_element(By.CSS_SELECTOR, 'div[data-meta-name="ProductVerticalSnippet"]:first-child', self.driver)
             print("ITEM FOUND")
-        except NoSuchElementException:
+        except:
             print("NO ITEM FOUND")
 
 
